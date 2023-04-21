@@ -77,7 +77,7 @@ module.exports = {
             subcategoryId: {
                 type: DataTypes.INTEGER
             },
-            marketid:{
+            marketId:{
                 type:DataTypes.INTEGER
             },
             note:{

@@ -22,7 +22,7 @@ exports.verify_code = catchAsync(async(req, res, next) => {
         const obj = {
             code: generated_code,
             number: user_phone,
-            sms: 'PandaTM tassyklaýyş koduňyz: ',
+            sms: 'Ykjam tassyklaýyş koduňyz: ',
         };
         var io = req.app.get('socketio');
         console.log(obj)
@@ -93,7 +93,6 @@ exports.signup = catchAsync(async(req, res, next) => {
             user_checked_phone,
             password,
             passwordConfirm,
-            nickname
         } = req.body;
 
         if (password.length < 6)
@@ -110,16 +109,11 @@ exports.signup = catchAsync(async(req, res, next) => {
         if (user) {
             return next(new AppError('This number has already registered', 400));
         }
-        const has_username = await Users.findOne({ where: { nickname } })
-        if (has_username) return next(new AppError("This nickname is already taken"), 400)
         const newUser = await Users.create({
             username,
             user_phone: user_checked_phone,
             password,
-            nickname
         });
-        const admin= await Users.findOne({where:{nickname: "admin"}})
-        await Userfriends.create({user_id1:newUser.user_id, user_id2:admin.user_id})
         createSendToken(newUser, 201, res);
     } else {
         res.send(400).json({

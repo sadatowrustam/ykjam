@@ -8,7 +8,14 @@ module.exports = {
                 primaryKey: true,
                 type: DataTypes.INTEGER
             },
+            image_id:{
+                type:DataTypes.UUID,
+                defaultValue:DataTypes.UUIDV4
+            },
             productId: {
+                type: DataTypes.INTEGER
+            },
+            marketId: {
                 type: DataTypes.INTEGER
             },
             image_mobile:{

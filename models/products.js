@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             this.belongsTo(Categories, { foreignKey: "categoryId", as: "category" })
             this.belongsTo(Subcategories, { foreignKey: "subcategoryId", as: "subcategory" })
             this.hasMany(Images, { foreignKey: "productId", as: "images" })
-            this.belongsTo(Users, { as: "user", foreignKey: "userId" })
+            // this.belongsTo(Users, { as: "user", foreignKey: "userId" })
             this.belongsToMany(Users, { through: "Likedproducts", as: "liked_users", foreignKey: "productId" })
             this.belongsTo(Market, { as: "market", foreignKey: "marketId"})
             this.hasMany(Comments, { as: "comments", foreignKey: "comments" })
@@ -67,23 +67,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
             },
         },
-        product_code: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notNull: {
-                    msg: "Product code cannot be null",
-                },
-                notEmpty: {
-                    msg: "Product code cannot be empty",
-                },
-            },
-        },
         price: DataTypes.REAL,
-        discount: {
-            type:DataTypes.REAL,
-            defaultValue:0
-        },
         isActive: {
             type:DataTypes.BOOLEAN,
             defaultValue:true
@@ -97,7 +81,6 @@ module.exports = (sequelize, DataTypes) => {
         categoryId: DataTypes.INTEGER,
         subcategoryId: DataTypes.INTEGER,
         marketId: DataTypes.INTEGER,
-        sellerId: DataTypes.INTEGER,
         hasComment:{
             type:DataTypes.BOOLEAN,
             defaultValue:false,

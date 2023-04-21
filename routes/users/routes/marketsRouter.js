@@ -7,5 +7,5 @@ router.get("/:id",getOneMarket)
 router.post("/add",addMArket)
 router.patch("/:id",editMArket)
 router.post("/delete/:id",deleteMarket)
-router.post("/upload-image",uploadImageMarket)
+router.post("/upload-image/:id",uploadImageMarket)
 module.exports=router

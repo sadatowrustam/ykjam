@@ -9,6 +9,10 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
+      market_id:{
+        type:DataTypes.UUID,
+        defaultValue:DataTypes.UUIDV4
+      },
       name: {
         type: DataTypes.STRING
       },

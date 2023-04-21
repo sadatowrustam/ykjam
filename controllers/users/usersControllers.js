@@ -37,21 +37,13 @@ exports.updateMyPassword = catchAsync(async(req, res, next) => {
 });
 
 exports.updateMe = catchAsync(async(req, res, next) => {
-    const { username, nickname, } = req.body;
-    if (!username || !nickname)
+    const { username} = req.body;
+    if (!username)
         return next(new AppError('Invalid credentials', 400));
 
     const user = await Users.findOne({ where: { user_id: [req.user.user_id] } });
-
-    const has_username = await Users.findOne({ where: { nickname } })
-
-    if (has_username) {
-        if (has_username.user_id != req.user.user_id) return next(new AppError("This nickname is already taken"))
-    }
-
     await user.update({
         username,
-        nickname
     });
     createSendToken(user, 200, res);
 });

@@ -3,8 +3,9 @@ const AppError = require('../../utils/appError');
 const catchAsync = require('../../utils/catchAsync');
 const { Market,Users,Categories,Subcategories,Products,Images } = require('../../models');
 const sharp = require('sharp');
+const{v4}=require("uuid")
 exports.getMyMarkets=catchAsync(async(req,res,next)=>{
-    const markets=await Market.findAll({where:{userId:req.user.id}})
+    const markets=await Market.findAll({where:{userId:req.user.id},include:{model:Images,as:"images",attributes:["image_id","image"],}})
     return res.send(markets)
 })
 exports.getOneMarket=catchAsync(async(req,res,next)=>{
@@ -69,7 +70,7 @@ exports.deleteMarket = catchAsync(async(req, res, next) => {
 })
 exports.uploadImageMarket=catchAsync(async(req,res,next)=>{
     const market_id = req.params.id;
-    const updateProduct = await Products.findOne({ where: { market_id } });
+    const updateProduct = await Market.findOne({ where: { market_id } });
     let imagesArray = []
     req.files = Object.values(req.files)
     req.files = intoArray(req.files)
@@ -82,9 +83,12 @@ exports.uploadImageMarket=catchAsync(async(req,res,next)=>{
         let buffer = await sharp(photo).resize(1080,720).webp().toBuffer()
 
         await sharp(buffer).toFile(`static/${image}`);
-        let newImage = await Images.create({ image, image_id, productId: updateProduct.id })
+        let newImage = await Images.create({ image, image_id, marketId: updateProduct.id, })
         imagesArray.push(newImage)
     }
     return res.status(201).send(imagesArray);
 })
-
+const intoArray = (file) => {
+    if (file[0].length == undefined) return file
+    else return file[0]
+}
